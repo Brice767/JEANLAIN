@@ -721,32 +721,6 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-logo-badge">JL</div>
-      <div class="login-title">GMAO Jean Lain</div>
-      <div class="login-sub">Connectez-vous pour accéder à l'application</div>
-    </div>
-    <div class="login-form">
-      <div class="login-error" id="login-error">Identifiant ou mot de passe incorrect.</div>
-      <div class="login-field">
-        <i class="ti ti-user"></i>
-        <input type="text" id="login-username" placeholder="Nom d'utilisateur" autocomplete="username">
-      </div>
-      <div class="login-field">
-        <i class="ti ti-lock"></i>
-        <input type="password" id="login-password" placeholder="Mot de passe" autocomplete="current-password">
-      </div>
-      <button class="login-btn" onclick="doLogin()"><i class="ti ti-login"></i> Se connecter</button>
-    </div>
-    <div style="text-align:center;margin-top:1.25rem;font-size:11px;color:var(--text3)">
-      Compte démo : <strong>admin</strong> / <strong>admin123</strong>
-    </div>
-  </div>
-</div>
-
 <!-- LOADING -->
 <div id="loading-overlay">
   <div style="margin-bottom:1rem">
@@ -778,13 +752,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
       <span class="notif-badge" id="notif-count" style="display:none">0</span>
     </button>
     <button class="nav-btn" onclick="nav('droits')"><i class="ti ti-shield-lock"></i> Droits</button>
-  </div>
-  <button class="topbar-user" id="topbar-user-btn" onclick="doLogout()" style="display:none">
-    <i class="ti ti-user-circle" style="font-size:18px"></i>
-    <span id="topbar-username">—</span>
-    <i class="ti ti-logout" style="font-size:14px;opacity:.7"></i>
-  </button>
-</div>
+ </div>
 
 <!-- MAIN -->
 <div class="main">
