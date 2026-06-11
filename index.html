@@ -2592,38 +2592,6 @@ function renderTiHistorique(demId){
     </div>`).join('');
 }
 
-// Enrichir openDetail pour inclure l'historique tech
-const _origOpenDetail = openDetail;
-function openDetail(id){
-  _origOpenDetail(id);
-  // Ajouter section historique dans le modal detail si absent
-  const body = document.querySelector('#modal-detail .detail-body');
-  if(!body) return;
-  let histSec = document.getElementById('detail-historique-section');
-  if(!histSec){
-    histSec = document.createElement('div');
-    histSec.id='detail-historique-section';
-    body.appendChild(histSec);
-  }
-  const files = demandsFiles[id]||{};
-  const hist = (files.historique||[]);
-  if(hist.length){
-    const statusLabels={'terminé':'Clôturée','suspendu':'Suspendue','à replanifier':'Replanifiée'};
-    histSec.innerHTML=`<div class="detail-section-label"><i class="ti ti-history"></i> Historique des interventions</div>`+
-      [...hist].reverse().map(e=>`
-        <div class="hist-entry s-${e.action}" style="margin-bottom:8px">
-          <div class="hist-entry-header">
-            <span class="hist-entry-tech">${e.techName}</span>
-            <span class="hist-entry-date">${fmtDate(e.date)||''} ${e.heure||''} · <span class="badge badge-${e.action==='terminé'?'termine':e.action==='suspendu'?'haute':'replanifier'}">${statusLabels[e.action]||e.action}</span></span>
-          </div>
-          <div style="font-size:12px;color:var(--text)">${e.bilan}</div>
-          ${e.commentInterne?`<div style="font-size:11px;color:var(--text2);margin-top:4px">💬 ${e.commentInterne}</div>`:''}
-          ${(e.photos&&e.photos.length)?`<div class="hist-photos">${e.photos.map(p=>`<div class="hist-photo" onclick="openLightbox('${p.data}')"><img src="${p.data}" alt="${p.name}"></div>`).join('')}</div>`:''}
-        </div>`).join('');
-    histSec.style.display='block';
-  } else { histSec.style.display='none'; }
-}
-
 // ── INIT ──────────────────────────────────────────────────────────
 document.getElementById('modal-statut').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
 document.addEventListener('dragleave',function(e){ if(e.target.classList&&e.target.classList.contains('slot-cell'))e.target.classList.remove('dragover'); });
