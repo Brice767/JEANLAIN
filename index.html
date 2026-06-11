@@ -576,34 +576,6 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
   .interventions-toolbar { flex-direction:column; align-items:stretch; }
 }
 
-/* ── LOGIN ── */
-#login-screen {
-  position:fixed; inset:0; z-index:10000; background:var(--jl-blue);
-  display:flex; align-items:center; justify-content:center; padding:1.5rem;
-}
-.login-box {
-  background:#fff; border-radius:16px; padding:2.5rem 2rem;
-  width:100%; max-width:380px; box-shadow:0 32px 80px rgba(0,10,40,.4);
-}
-.login-logo { text-align:center; margin-bottom:1.75rem; }
-.login-logo-badge {
-  width:56px; height:56px; background:var(--jl-red); border-radius:14px;
-  display:inline-flex; align-items:center; justify-content:center;
-  color:#fff; font-size:24px; font-weight:700; margin-bottom:.75rem;
-}
-.login-title { font-size:20px; font-weight:700; color:var(--jl-blue); }
-.login-sub { font-size:12px; color:var(--text3); margin-top:4px; }
-.login-form { display:flex; flex-direction:column; gap:1rem; margin-top:1.5rem; }
-.login-field { position:relative; }
-.login-field i { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--text3); font-size:16px; pointer-events:none; }
-.login-field input { width:100%; padding:10px 12px 10px 36px; border:1.5px solid var(--border2); border-radius:var(--radius-sm); font-size:14px; }
-.login-field input:focus { border-color:var(--jl-blue); box-shadow:0 0 0 3px rgba(0,48,135,.10); }
-.login-btn { width:100%; padding:11px; background:var(--jl-blue); color:#fff; border:none; border-radius:var(--radius-sm); font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:background .15s; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:.25rem; }
-.login-btn:hover { background:var(--jl-blue2); }
-.login-error { background:var(--jl-red-lt); border:1px solid #F7C1C1; border-radius:var(--radius-sm); padding:8px 12px; font-size:12px; color:var(--jl-red); display:none; }
-.topbar-user { display:flex; align-items:center; gap:8px; cursor:pointer; padding:4px 10px; border-radius:var(--radius-sm); background:rgba(255,255,255,.12); color:#fff; font-size:12px; font-weight:500; border:none; font-family:inherit; transition:background .15s; flex-shrink:0; }
-.topbar-user:hover { background:rgba(255,255,255,.22); }
-
 /* ── DROITS TABS ── */
 .droits-tabs { display:flex; gap:2px; border-bottom:2px solid var(--border); margin-bottom:1.5rem; }
 .droits-tab { padding:9px 18px; border:none; background:none; cursor:pointer; font-family:inherit; font-size:13px; font-weight:500; color:var(--text3); border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .15s; display:flex; align-items:center; gap:6px; }
