@@ -2592,19 +2592,6 @@ function renderTiHistorique(demId){
     </div>`).join('');
 }
 
-// Enrichir openDetail pour inclure l'historique tech
-const _origOpenDetail = openDetail;
-function openDetail(id){
-  _origOpenDetail(id);
-  // Ajouter section historique dans le modal detail si absent
-  const body = document.querySelector('#modal-detail .detail-body');
-  if(!body) return;
-  let histSec = document.getElementById('detail-historique-section');
-  if(!histSec){
-    histSec = document.createElement('div');
-    histSec.id='detail-historique-section';
-    body.appendChild(histSec);
-  }
   const files = demandsFiles[id]||{};
   const hist = (files.historique||[]);
   if(hist.length){
