@@ -1612,46 +1612,112 @@ function renderPlannerGrid(){
 
 function renderSlotTasks(){
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
-  assignments.forEach(a=>{
-    const cell=document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
-    if(!cell) return;
-    const demand=demands.find(d=>d.id===a.demand_id);
-    if(!demand) return;
-    const el=document.createElement('div');
-    el.className='slot-task';
-    el.innerHTML=`
-      <button class="slot-task-remove" onclick="removeFromSlot('${a.tech_id}',${a.day_index},'${a.demand_id}')" title="Remettre dans la liste">×</button>
-      <div class="slot-task-title">${demand.titre.substring(0,26)}${demand.titre.length>26?'…':''}</div>
-      <span class="badge badge-${demand.priority}">${demand.priority}</span>`;
-    cell.appendChild(el);
-  });
+
+  const selectedDate = selectedCalendarDate || selectedWeekStart;
+  if(!selectedDate) return;
+
+  const base = new Date(selectedDate).toISOString().split('T')[0];
+
+  assignments
+    .filter(a => a.date === base) // ⭐ FILTRE PAR DATE RÉELLE
+    .forEach(a => {
+
+      const cell = document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
+      if(!cell) return;
+
+      const demand = demands.find(d => d.id === a.demand_id);
+      if(!demand) return;
+
+      const el = document.createElement('div');
+      el.className = 'slot-task';
+
+      el.innerHTML = `
+        <button class="slot-task-remove"
+          onclick="removeFromSlot('${a.tech_id}',${a.day_index},'${a.demand_id}')"
+          title="Remettre dans la liste">×</button>
+
+        <div class="slot-task-title">
+          ${demand.titre.substring(0,26)}${demand.titre.length>26?'…':''}
+        </div>
+
+        <span class="badge badge-${demand.priority}">
+          ${demand.priority}
+        </span>
+      `;
+
+      cell.appendChild(el);
+    });
 }
 
 function dragOver(e){ e.preventDefault(); e.currentTarget.classList.add('dragover'); }
 
 async function dropToSlot(e,techId,day){
   e.preventDefault();
+
   document.querySelectorAll('.slot-cell').forEach(c=>c.classList.remove('dragover'));
   if(!dragId) return;
-  const exists=assignments.find(a=>a.demand_id===dragId&&a.tech_id===techId&&a.day_index===day);
+
+  const exists = assignments.find(a =>
+    a.demand_id === dragId &&
+    a.tech_id === techId &&
+    a.day_index === day
+  );
   if(exists) return;
-  if(dragFrom&&dragFrom!=='pool'){
-    const [ot,od]=dragFrom.split('-');
-    await sb.from('assignments').delete().eq('demand_id',dragId).eq('tech_id',ot).eq('day_index',parseInt(od));
-    // Mise à jour locale immédiate
-    assignments=assignments.filter(a=>!(a.demand_id===dragId&&a.tech_id===ot&&a.day_index===parseInt(od)));
+
+  if(dragFrom && dragFrom !== 'pool'){
+    const [ot,od] = dragFrom.split('-');
+    await sb.from('assignments')
+      .delete()
+      .eq('demand_id', dragId)
+      .eq('tech_id', ot)
+      .eq('day_index', parseInt(od));
+
+    assignments = assignments.filter(a =>
+      !(a.demand_id === dragId && a.tech_id === ot && a.day_index === parseInt(od))
+    );
   }
+
   setSyncDot('loading');
-  const newAssignment={demand_id:dragId,tech_id:techId,day_index:day};
+
+  // ✅ BASE DATE
+  const base = selectedCalendarDate
+    ? new Date(selectedCalendarDate)
+    : new Date(selectedWeekStart);
+
+  const date = new Date(base);
+  date.setDate(base.getDate() + day);
+
+  const newAssignment = {
+    demand_id: dragId,
+    tech_id: techId,
+    day_index: day, // on garde temporairement pour compat
+    date: date.toISOString().split('T')[0] // ⭐ vraie date
+  };
+
   await sb.from('assignments').insert([newAssignment]);
-  // Mise à jour locale immédiate
+
   assignments.push(newAssignment);
-  renderTaskPool(); renderSlotTasks(); renderTechGrid();
-  const d=demands.find(x=>x.id===dragId);
-  const tech=TECHS.find(t=>t.id===techId);
-  if(d&&tech) await addNotif('📅','Planifiée',`"${d.titre}" → ${tech.name} — ${DAYS_FULL[day]}`,true);
+
+  renderTaskPool();
+  renderSlotTasks();
+  renderTechGrid();
+
+  const d = demands.find(x=>x.id===dragId);
+  const tech = TECHS.find(t=>t.id===techId);
+
+  if(d && tech){
+    await addNotif(
+      '📅',
+      'Planifiée',
+      `"${d.titre}" → ${tech.name}`,
+      true
+    );
+  }
+
   setSyncDot('ok');
-  dragId=null; dragFrom=null;
+
+  dragId = null;
+  dragFrom = null;
 }
 
 async function dropToPool(e){
