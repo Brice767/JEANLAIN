@@ -803,7 +803,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
           </div>
           <div class="form-group">
             <label>Équipement</label>
-            <input type="text" id="f-lieu" placeholder="Ex: Compresseur B2">
+            <input type="text" id="f-equipement" placeholder="Ex: Compresseur B2">
           </div>
           <div class="form-group">
             <label>Type d'intervention</label>
@@ -1485,7 +1485,11 @@ function resetForm(){
 async function submitForm(){
   const titre=document.getElementById('f-titre').value.trim();
   const lieu=document.getElementById('f-lieu').value.trim();
-  if(!titre||!lieu){ showToast('Erreur','Titre et localisation sont obligatoires.'); return; }
+  const demandeur = document.getElementById('f-demandeur').value.trim();
+  const description = document.getElementById('f-desc').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const photos = selectedPhotos || [];
+  if(!titre||!lieu||!demandeur||!description||!email||photos.length === 0){ showToast('Erreur','Veuillez remplir tous les champs obligatoires.'); return; }
   const d={
     id:getId(), titre, lieu,
     type:document.getElementById('f-type').value,
