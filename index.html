@@ -1609,38 +1609,17 @@ function renderPlannerGrid(){
 
 function renderSlotTasks(){
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
-
-  const weekKey = selectedWeekStart
-    ? selectedWeekStart.toISOString().split('T')[0]
-    : null;
-
-  assignments.forEach(a => {
-
-    const isOld = !a.week_start;
-    const isCurrentWeek = weekKey && a.week_start === weekKey;
-
-    // 👉 logique hybride
-    if(!isOld && !isCurrentWeek) return;
-
-    const cell = document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
+  assignments.forEach(a=>{
+    const cell=document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
     if(!cell) return;
-
-    const demand = demands.find(d => d.id === a.demand_id);
+    const demand=demands.find(d=>d.id===a.demand_id);
     if(!demand) return;
-
-    const el = document.createElement('div');
+    const el=document.createElement('div');
     el.className='slot-task';
     el.innerHTML=`
-      <button class="slot-task-remove"
-        onclick="removeFromSlot('${a.tech_id}',${a.day_index},'${a.demand_id}')">×</button>
-      <div class="slot-task-title">
-        ${demand.titre.substring(0,26)}${demand.titre.length>26?'…':''}
-      </div>
-      <span class="badge badge-${demand.priority}">
-        ${demand.priority}
-      </span>
-    `;
-
+      <button class="slot-task-remove" onclick="removeFromSlot('${a.tech_id}',${a.day_index},'${a.demand_id}')" title="Remettre dans la liste">×</button>
+      <div class="slot-task-title">${demand.titre.substring(0,26)}${demand.titre.length>26?'…':''}</div>
+      <span class="badge badge-${demand.priority}">${demand.priority}</span>`;
     cell.appendChild(el);
   });
 }
