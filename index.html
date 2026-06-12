@@ -1608,6 +1608,7 @@ function renderPlannerGrid(){
 }
 
 function renderSlotTasks(){
+  console.log(assignments[0]);
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
  const weekKey = selectedWeekStart
   ? selectedWeekStart.toISOString().split('T')[0]
