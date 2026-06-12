@@ -2052,6 +2052,8 @@ let interventionSortAsc        = false; // plus récent en premier par défaut
 // Structure : { demandId: { photos:[{name,data,size}], attachments:[{name,size}] } }
 let demandsFiles = {};
 
+let selectedCalendarDate = null;
+  
 function renderInterventions(){
   filterInterventions();
 }
@@ -2585,6 +2587,8 @@ function selectCalWeek(y,m,d){
     const monDt = new Date(dt); monDt.setDate(day-dw);
     if(monDt.toDateString()===mon.toDateString()) el.classList.add('selected-week');
   });
+  selectedCalendarDate = new Date(y, m, d);
+  filterInterventions();
 }
 
 // ── TECH INTERVENTION MODAL ───────────────────────────────────────
