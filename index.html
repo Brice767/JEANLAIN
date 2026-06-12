@@ -2132,11 +2132,13 @@ function renderInterventionsTable(list){
         </div>
       </td>
       <td>
-        <button onclick="event.stopPropagation(); supprimerIntervention('${d.id}')">
-          Supprimer
-        </button>
-      </td>
-    </tr>`;
+  <button class="btn btn-danger btn-sm"
+          onclick="event.stopPropagation(); supprimerIntervention('${d.id}')"
+          style="flex-shrink:0;align-self:flex-start">
+    <i class="ti ti-trash"></i>
+  </button>
+ </td>
+</tr>`;
   }).join('');
 }
 
