@@ -1349,6 +1349,7 @@ let currentTech='t1', selectedPriority='basse';
 let modalTaskId=null, modalTechId=null, modalDay=null;
 let dragId=null, dragFrom=null;
 let emailjsReady = false;
+let selectedWeekStart = new Date();
 
 // ── EMAILJS INIT ────────────────────────────────────────────────
 (function initEmailJS(){
@@ -2572,6 +2573,7 @@ function selectCalWeek(y,m,d){
   const date = new Date(y,m,d);
   const dow = (date.getDay()+6)%7;
   const mon = new Date(date); mon.setDate(d-dow);
+  selectedWeekStart = new Date(mon);
   // Update week label
   document.getElementById('week-label').textContent = mon.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
   // Highlight selected week in calendar
@@ -2585,6 +2587,7 @@ function selectCalWeek(y,m,d){
     const monDt = new Date(dt); monDt.setDate(day-dw);
     if(monDt.toDateString()===mon.toDateString()) el.classList.add('selected-week');
   });
+  renderPlanning();
 }
 
 // ── TECH INTERVENTION MODAL ───────────────────────────────────────
