@@ -1609,21 +1609,17 @@ function renderPlannerGrid(){
 }
 
 function renderSlotTasks(){
+console.log("selectedWeekStart =", selectedWeekStart);
+console.log("assignments =", assignments);
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
 assignments
   .filter(a => {
-    if(!selectedWeekStart) {
-      // pas de semaine sélectionnée → on affiche tout (ou anciennes + nouvelles)
-      return true;
-    }
-
-    if(!a.week_start) {
-      // anciennes interventions → on les garde (transition)
-      return true;
-    }
+    if(!selectedWeekStart) return true;
+    if(!a.week_start) return false;
 
     return a.week_start === selectedWeekStart.toISOString().split('T')[0];
   })
+  .forEach(a => {
   .forEach(a=>{
     const cell=document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
     if(!cell) return;
