@@ -1567,6 +1567,7 @@ function renderPlanning(){
 }
 
 function renderTaskPool(){
+  console.log("selectedWeekStart =", selectedWeekStart);
   const used=getAssigned();
   let pool = demands.filter(d => !used.has(d.id) && d.status !== 'terminé');
   
