@@ -1472,7 +1472,7 @@ function selPriority(el){
   el.classList.add('sel'); selectedPriority=el.dataset.p;
 }
 function resetForm(){
-  ['f-titre','f-lieu','f-demandeur','f-desc','f-date','f-email'].forEach(id=>document.getElementById(id).value='');
+  ['f-titre','f-lieu','f-demandeur','f-desc','f-email'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-type').selectedIndex=0;
   document.querySelectorAll('.priority-opt').forEach(e=>e.classList.remove('sel'));
   document.querySelector('.priority-opt[data-p="basse"]').classList.add('sel');
@@ -1490,7 +1490,6 @@ async function submitForm(){
     demandeur:document.getElementById('f-demandeur').value||'Anonyme',
     priority:selectedPriority,
     description:document.getElementById('f-desc').value,
-    date_souhaitee:document.getElementById('f-date').value,
     email:document.getElementById('f-email').value,
     status:'à traiter',
   };
