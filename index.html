@@ -1609,7 +1609,16 @@ function renderPlannerGrid(){
 
 function renderSlotTasks(){
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
-  assignments.forEach(a=>{
+const weekKey = selectedWeekStart
+  ? selectedWeekStart.toISOString().split('T')[0]
+  : null;
+
+assignments.forEach(a => {
+    const isOld = !a.week_start;
+    const isCurrentWeek = weekKey && a.week_start === weekKey;
+
+    if(weekKey && !isOld && !isCurrentWeek) return;
+  
     const cell=document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
     if(!cell) return;
     const demand=demands.find(d=>d.id===a.demand_id);
