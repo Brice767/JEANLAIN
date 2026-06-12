@@ -1349,6 +1349,7 @@ let currentTech='t1', selectedPriority='basse';
 let modalTaskId=null, modalTechId=null, modalDay=null;
 let dragId=null, dragFrom=null;
 let emailjsReady = false;
+let selectedWeekStart = null;
 
 // ── EMAILJS INIT ────────────────────────────────────────────────
 (function initEmailJS(){
@@ -1567,7 +1568,21 @@ function renderPlanning(){
 
 function renderTaskPool(){
   const used=getAssigned();
-  const pool=demands.filter(d=>!used.has(d.id)&&d.status!=='terminé');
+  let pool = demands.filter(d => !used.has(d.id) && d.status !== 'terminé');
+  
+  if(selectedWeekStart){
+  const start = new Date(selectedWeekStart);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+
+  pool = pool.filter(d => {
+    const date = new Date(d.date_planifiee || d.date_souhaitee);
+
+    if(isNaN(date)) return true; // sans date = visible
+
+    return date >= start && date <= end;
+  });
+}
   const container=document.getElementById('task-pool');
   container.innerHTML='';
   document.getElementById('tasks-count').textContent=`(${pool.length})`;
@@ -2075,6 +2090,19 @@ function setFilterPriority(el, val){
 function filterInterventions(){
   const q = (document.getElementById('search-interventions').value||'').toLowerCase().trim();
   let list = demands.filter(d=>{
+if(selectedCalendarDate){
+  const dDate = new Date(d.date_souhaitee);
+
+  if(isNaN(dDate)) return false;
+
+  if(
+    dDate.getFullYear() !== selectedCalendarDate.getFullYear() ||
+    dDate.getMonth() !== selectedCalendarDate.getMonth() ||
+    dDate.getDate() !== selectedCalendarDate.getDate()
+  ){
+    return false;
+  }
+}
     if(interventionFilterStatus   && d.status   !== interventionFilterStatus)   return false;
     if(interventionFilterPriority && d.priority !== interventionFilterPriority) return false;
     if(q){
@@ -2587,8 +2615,8 @@ function selectCalWeek(y,m,d){
     const monDt = new Date(dt); monDt.setDate(day-dw);
     if(monDt.toDateString()===mon.toDateString()) el.classList.add('selected-week');
   });
-  selectedCalendarDate = new Date(y, m, d);
-  filterInterventions();
+  selectedWeekStart = mon;
+  renderPlanning();
 }
 
 // ── TECH INTERVENTION MODAL ───────────────────────────────────────
