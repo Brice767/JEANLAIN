@@ -1610,9 +1610,17 @@ function renderPlannerGrid(){
 
 function renderSlotTasks(){
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
- assignments
+assignments
   .filter(a => {
-    if(!a.week_start || !selectedWeekStart) return false;
+    if(!selectedWeekStart) {
+      // pas de semaine sélectionnée → on affiche tout (ou anciennes + nouvelles)
+      return true;
+    }
+
+    if(!a.week_start) {
+      // anciennes interventions → on les garde (transition)
+      return true;
+    }
 
     return a.week_start === selectedWeekStart.toISOString().split('T')[0];
   })
