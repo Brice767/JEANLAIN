@@ -1640,7 +1640,12 @@ async function dropToSlot(e,techId,day){
     assignments=assignments.filter(a=>!(a.demand_id===dragId&&a.tech_id===ot&&a.day_index===parseInt(od)));
   }
   setSyncDot('loading');
-  const newAssignment = {demand_id: dragId,tech_id: techId,day_index: day};
+ const newAssignment = {
+  demand_id: dragId,
+  tech_id: techId,
+  day_index: day,
+  week_start: selectedWeekStart.toISOString().split('T')[0]
+};
   console.log(newAssignment);
   await sb.from('assignments').insert([newAssignment]);
   // Mise à jour locale immédiate
