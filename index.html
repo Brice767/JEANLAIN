@@ -1610,7 +1610,13 @@ function renderPlannerGrid(){
 
 function renderSlotTasks(){
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
-  assignments.forEach(a=>{
+  assignments
+  .filter(a => {
+    if(!a.week_start) return false;
+
+    return a.week_start === selectedWeekStart.toISOString().split('T')[0];
+  })
+  .forEach(a=>{
     const cell=document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
     if(!cell) return;
     const demand=demands.find(d=>d.id===a.demand_id);
