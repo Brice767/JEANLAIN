@@ -2414,6 +2414,7 @@ function doLogin(){
   if(!user){ errEl.style.display='block'; return; }
   errEl.style.display='none';
   currentUser = user;
+  localStorage.setItem('loggedUser', user.username);
   document.getElementById('login-screen').style.display='none';
   document.getElementById('topbar-user-btn').style.display='flex';
   document.getElementById('topbar-username').textContent = `${user.prenom} ${user.nom}`;
@@ -2428,6 +2429,9 @@ document.addEventListener('keydown', e=>{ if(e.key==='Enter' && document.getElem
 
 function doLogout(){
   if(!confirm('Se déconnecter ?')) return;
+
+  localStorage.removeItem('loggedUser');
+  
   currentUser = null;
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('topbar-user-btn').style.display='none';
@@ -2791,6 +2795,27 @@ document.addEventListener('dragleave',function(e){ if(e.target.classList&&e.targ
 calYear=new Date().getFullYear(); calMonth=new Date().getMonth();
 // Ne pas charger les données tant que l'utilisateur n'est pas connecté
 document.getElementById('loading-overlay').style.display='none';
+const savedUsername = localStorage.getItem('loggedUser');
+
+if (savedUsername) {
+  const user = appUsers.find(u => u.username === savedUsername);
+
+  if (user) {
+    currentUser = user;
+
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('topbar-user-btn').style.display = 'flex';
+    document.getElementById('topbar-username').textContent =
+      `${user.prenom} ${user.nom}`;
+
+    applyProfileVisibility();
+
+    const pages = PROFILE_PAGES[user.profil] || ['demandes'];
+    nav(pages[0]);
+
+    loadAll().then(() => subscribeRealtime());
+  }
+} 
 </script>
 </body>
 </html>
