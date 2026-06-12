@@ -908,6 +908,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
               <th onclick="sortInterventions('status')">Statut <span class="sort-icon" id="sort-status">↕</span></th>
               <th onclick="sortInterventions('date_souhaitee')">Date <span class="sort-icon" id="sort-date_souhaitee">↕</span></th>
               <th>Fichiers</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody id="interventions-tbody"></tbody>
@@ -2103,7 +2104,7 @@ function sortInterventions(key){
 function renderInterventionsTable(list){
   const tbody = document.getElementById('interventions-tbody');
   if(!list.length){
-    tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:2.5rem;color:var(--text3)"><i class="ti ti-file-off" style="font-size:28px;display:block;margin-bottom:.5rem"></i>Aucune intervention trouvée</td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;padding:2.5rem;color:var(--text3)"><i class="ti ti-file-off" style="font-size:28px;display:block;margin-bottom:.5rem"></i>Aucune intervention trouvée</td></tr>`;
     return;
   }
   tbody.innerHTML = list.map(d=>{
@@ -2129,6 +2130,11 @@ function renderInterventionsTable(list){
           ${techNames?`<i class="ti ti-user" style="margin-left:4px"></i><span style="font-size:10px">${techNames}</span>`:''}
           ${!nbPhotos&&!nbAttach&&!techNames?`<span style="color:var(--text3)">—</span>`:''}
         </div>
+      </td>
+      <td>
+        <button onclick="event.stopPropagation(); supprimerIntervention('${d.id}')">
+          Supprimer
+        </button>
       </td>
     </tr>`;
   }).join('');
@@ -2163,7 +2169,23 @@ function openDetail(id){
   } else {
     planifEl.style.display='none';
   }
+function supprimerIntervention(id) {
+  if (!confirm("Voulez-vous vraiment supprimer cette intervention ?")) {
+    return;
+  }
 
+  // Supprime l'intervention
+  demands = demands.filter(d => d.id !== id);
+
+  // Supprime les affectations liées
+  assignments = assignments.filter(a => a.demand_id !== id);
+
+  // Supprime les fichiers liés
+  delete demandsFiles[id];
+
+  // Recharge la liste
+  filterInterventions();
+}
   // Planning section
   const planifSection = document.getElementById('detail-planning-section');
   if(planif.length){
