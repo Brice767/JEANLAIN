@@ -1612,10 +1612,12 @@ function renderSlotTasks(){
   document.querySelectorAll('.slot-task').forEach(e=>e.remove());
   assignments
   .filter(a => {
-    if(!a.week_start) return false;
+  // Anciennes affectations : on les affiche toujours
+  if(!a.week_start) return true;
 
-    return a.week_start === selectedWeekStart.toISOString().split('T')[0];
-  })
+  // Nouvelles affectations : on filtre par semaine
+  return a.week_start === selectedWeekStart.toISOString().split('T')[0];
+})
   .forEach(a=>{
     const cell=document.getElementById(`slot-${a.tech_id}-${a.day_index}`);
     if(!cell) return;
