@@ -826,15 +826,15 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
             </div>
           </div>
           <div class="form-group full">
-            <label>Description / Observations</label>
+            <label>Description / Observations *</label>
             <textarea id="f-desc" placeholder="Décrivez le problème, les symptômes observés…"></textarea>
           </div>
           <div class="form-group full">
-            <label>Contact alerteur (email)</label>
+            <label>Contact alerteur (email) *</label>
             <input type="email" id="f-email" placeholder="alerteur@jeanlain.com">
           </div>
           <div class="form-group full">
-            <label><i class="ti ti-photo" style="vertical-align:-2px;margin-right:4px"></i> Photos (optionnel)</label>
+            <label><i class="ti ti-photo" style="vertical-align:-2px;margin-right:4px"></i> Photos (obligatoire)</label>
             <div class="upload-zone" id="upload-photos-zone" onclick="document.getElementById('f-photos').click()">
               <input type="file" id="f-photos" accept="image/*" multiple style="display:none" onchange="handlePhotos(this)">
               <i class="ti ti-camera-plus" style="font-size:24px;color:var(--text3);display:block;margin-bottom:6px"></i>
