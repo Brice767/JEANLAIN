@@ -1571,19 +1571,6 @@ function renderTaskPool(){
   const used=getAssigned();
   let pool = demands.filter(d => !used.has(d.id) && d.status !== 'terminé');
   
-  if(selectedWeekStart){
-  const start = new Date(selectedWeekStart);
-  const end = new Date(start);
-  end.setDate(start.getDate() + 6);
-
-  pool = pool.filter(d => {
-    const date = new Date(d.date_planifiee || d.date_souhaitee);
-
-    if(isNaN(date)) return true; // sans date = visible
-
-    return date >= start && date <= end;
-  });
-}
   const container=document.getElementById('task-pool');
   container.innerHTML='';
   document.getElementById('tasks-count').textContent=`(${pool.length})`;
