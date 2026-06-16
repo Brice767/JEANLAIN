@@ -1670,22 +1670,23 @@ async function deleteDemand(id){
   setSyncDot('ok');
 }
 
-  function renderSites() {
+function renderSites() {
 
   const container = document.getElementById('sites-tree');
 
-  container.innerHTML = '';
+  if (!container) return;
+
+  let html = '';
 
   sites.forEach(site => {
 
-    let html = `
+    html += `
       <div class="card mb-2">
         <div class="card-header">
           <strong>🏢 ${site.nom}</strong>
         </div>
 
         <div class="card-body">
-
           ${site.adresse ? `<div>📍 ${site.adresse}</div>` : ''}
           ${site.commentaire ? `<div>💬 ${site.commentaire}</div>` : ''}
           ${site.infos_cles ? `<div>🔑 ${site.infos_cles}</div>` : ''}
@@ -1706,13 +1707,7 @@ async function deleteDemand(id){
             zones
               .filter(z => z.niveau_id === niv.id)
               .forEach(zone => {
-
-                html += `
-                  <div style="margin-left:20px;">
-                    📌 ${zone.nom}
-                  </div>
-                `;
-
+                html += `<div style="margin-left:20px;">📌 ${zone.nom}</div>`;
               });
 
             html += `</div>`;
@@ -1721,15 +1716,10 @@ async function deleteDemand(id){
         html += `</div>`;
       });
 
-    html += `
-        </div>
-      </div>
-    `;
-
-    container.innerHTML += html;
-
+    html += `</div></div>`;
   });
 
+  container.innerHTML = html;
 }
   
 // ── PLANNING ─────────────────────────────────────────────────────
