@@ -1532,29 +1532,36 @@ function getWeekLabel(){ return new Date(2026,4,4).toLocaleDateString('fr-FR',{d
 // ── NAV ──────────────────────────────────────────────────────────
 function nav(page){
 
+  // 1. masquer toutes les pages
   document.querySelectorAll('.page').forEach(p =>
     p.classList.remove('active')
   );
 
+  // 2. enlever actif menu
   document.querySelectorAll('.nav-btn').forEach(b =>
     b.classList.remove('active')
   );
 
-  document.getElementById('page-'+page).classList.add('active');
+  // 3. afficher page
+  const pageEl = document.getElementById('page-' + page);
+  if(pageEl) pageEl.classList.add('active');
 
-  // active bouton correspondant
-  const btn = [...document.querySelectorAll('.nav-btn')]
-    .find(b => b.getAttribute('onclick')?.includes(page));
+  // 4. activer bouton correspondant (SIMPLE ET FIABLE)
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if(b.getAttribute('onclick')?.includes(page)){
+      b.classList.add('active');
+    }
+  });
 
-  if(btn) btn.classList.add('active');
+  // 5. render pages
+  if(page === 'planning') renderPlanning();
+  if(page === 'technicien') renderTechView();
+  if(page === 'demandes'){ renderMyDemands(); renderStats(); }
+  if(page === 'alertes'){ renderNotifs(); markAllReadDB(); }
+  if(page === 'droits') renderDroits();
+  if(page === 'interventions') renderInterventions();
+  if(page === 'sites') renderSites();
 
-  if(page==='planning') renderPlanning();
-  if(page==='technicien') renderTechView();
-  if(page==='demandes'){ renderMyDemands(); renderStats(); }
-  if(page==='alertes'){ renderNotifs(); markAllReadDB(); }
-  if(page==='droits') renderDroits();
-  if(page==='interventions') renderInterventions();
-  if(page==='sites') renderSites();
 }
 
 // ── STATS ────────────────────────────────────────────────────────
