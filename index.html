@@ -768,6 +768,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
   <div class="nav">
     <button class="nav-btn active" onclick="nav('demandes')"><i class="ti ti-file-plus"></i> Nouvelle demande</button>
     <button class="nav-btn" onclick="nav('interventions')"><i class="ti ti-clipboard-list"></i> Liste interventions</button>
+    <button class="nav-btn" onclick="nav('sites')"><i class="ti ti-building-community"></i> Sites</button>
     <button class="nav-btn" onclick="nav('planning')"><i class="ti ti-layout-kanban"></i> Planning</button>
     <button class="nav-btn" onclick="nav('technicien')"><i class="ti ti-user-check"></i> Vue technicien</button>
     <button class="nav-btn" onclick="nav('alertes')">
@@ -922,6 +923,48 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
     </div>
   </div>
 
+<!-- ═══ SITES / BÂTIMENTS / NIVEAUX / ZONES ═══ -->
+<div class="page page-bg" id="page-sites">
+  <div class="page-content">
+
+    <div class="interventions-toolbar">
+
+      <div class="search-box">
+        <i class="ti ti-search"></i>
+        <input type="text"
+               id="search-sites"
+               placeholder="Rechercher un site, bâtiment, niveau ou zone..."
+               oninput="filterSites()">
+      </div>
+
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+
+        <button class="btn btn-sm" onclick="addSite()">
+          <i class="ti ti-map-pin"></i> Site
+        </button>
+
+        <button class="btn btn-sm" onclick="addBatiment()">
+          <i class="ti ti-building"></i> Bâtiment
+        </button>
+
+        <button class="btn btn-sm" onclick="addNiveau()">
+          <i class="ti ti-stairs"></i> Niveau
+        </button>
+
+        <button class="btn btn-sm" onclick="addZone()">
+          <i class="ti ti-map-2"></i> Zone
+        </button>
+
+      </div>
+
+    </div>
+
+    <div id="sites-tree"></div>
+
+  </div>
+</div>
+
+  
   <!-- ═══ PLANNING ═══ -->
   <div class="page page-bg" id="page-planning">
     <div class="page-content">
@@ -1350,6 +1393,12 @@ let modalTaskId=null, modalTechId=null, modalDay=null;
 let dragId=null, dragFrom=null;
 let emailjsReady = false;
 
+// Gestion des sites
+let sites = [];
+let batiments = [];
+let niveaux = [];
+let zones = [];
+
 // ── EMAILJS INIT ────────────────────────────────────────────────
 (function initEmailJS(){
   if(EMAILJS_PUBLIC_KEY !== 'VOTRE_PUBLIC_KEY'){
@@ -1445,7 +1494,7 @@ function nav(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  const idx={demandes:0,interventions:1,planning:2,technicien:3,alertes:4,droits:5};
+  const idx={demandes:0,interventions:1,sites:2,planning:3,technicien:4,alertes:5,droits:6};
   document.querySelectorAll('.nav-btn')[idx[page]].classList.add('active');
   if(page==='planning')      renderPlanning();
   if(page==='technicien')    renderTechView();
@@ -1453,6 +1502,7 @@ function nav(page){
   if(page==='alertes')       { renderNotifs(); markAllReadDB(); }
   if(page==='droits')        renderDroits();
   if(page==='interventions') renderInterventions();
+  if(page==='sites') renderSites();
 }
 
 // ── STATS ────────────────────────────────────────────────────────
@@ -1556,6 +1606,69 @@ async function deleteDemand(id){
   setSyncDot('ok');
 }
 
+// ── SITES ─────────────────────────────────────────────────────
+function renderSites() {
+
+    const tree = document.getElementById('sites-tree');
+
+    tree.innerHTML = '';
+
+    if (sites.length === 0) {
+        tree.innerHTML = `
+            <div style="padding:20px;text-align:center;">
+                <i class="ti ti-building-community" style="font-size:48px;"></i>
+                <p>Aucun site enregistré.</p>
+            </div>
+        `;
+        return;
+    }
+
+    sites.forEach(site => {
+
+        tree.innerHTML += `
+            <div class="card" style="margin-bottom:12px;padding:12px;">
+                <h3>🏢 ${site.nom}</h3>
+                <p>📍 ${site.adresse || ''}</p>
+            </div>
+        `;
+
+    });
+
+}
+
+function addSite(){
+
+    const nom = prompt("Nom du site :");
+
+    if(!nom) return;
+
+    const adresse = prompt("Adresse du site :") || '';
+
+    sites.push({
+        id: Date.now(),
+        nom,
+        adresse
+    });
+
+    renderSites();
+}
+
+function addBatiment(){
+    alert("Fonction à développer");
+}
+
+function addNiveau(){
+    alert("Fonction à développer");
+}
+
+function addZone(){
+    alert("Fonction à développer");
+}
+
+function filterSites(){
+    renderSites();
+}
+  
 // ── PLANNING ─────────────────────────────────────────────────────
 function getAssigned(){ return new Set(assignments.map(a=>a.demand_id)); }
 
