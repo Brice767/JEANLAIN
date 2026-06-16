@@ -1670,6 +1670,68 @@ async function deleteDemand(id){
   setSyncDot('ok');
 }
 
+  function renderSites() {
+
+  const container = document.getElementById('sites-tree');
+
+  container.innerHTML = '';
+
+  sites.forEach(site => {
+
+    let html = `
+      <div class="card mb-2">
+        <div class="card-header">
+          <strong>🏢 ${site.nom}</strong>
+        </div>
+
+        <div class="card-body">
+
+          ${site.adresse ? `<div>📍 ${site.adresse}</div>` : ''}
+          ${site.commentaire ? `<div>💬 ${site.commentaire}</div>` : ''}
+          ${site.infos_cles ? `<div>🔑 ${site.infos_cles}</div>` : ''}
+    `;
+
+    batiments
+      .filter(b => b.site_id === site.id)
+      .forEach(bat => {
+
+        html += `<div style="margin-left:20px;">🏭 ${bat.nom}`;
+
+        niveaux
+          .filter(n => n.batiment_id === bat.id)
+          .forEach(niv => {
+
+            html += `<div style="margin-left:20px;">🪜 ${niv.nom}`;
+
+            zones
+              .filter(z => z.niveau_id === niv.id)
+              .forEach(zone => {
+
+                html += `
+                  <div style="margin-left:20px;">
+                    📌 ${zone.nom}
+                  </div>
+                `;
+
+              });
+
+            html += `</div>`;
+          });
+
+        html += `</div>`;
+      });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    container.innerHTML += html;
+
+  });
+
+}
+  
 // ── PLANNING ─────────────────────────────────────────────────────
 function getAssigned(){ return new Set(assignments.map(a=>a.demand_id)); }
 
