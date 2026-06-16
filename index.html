@@ -765,18 +765,40 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
     </div>
     <span class="sync-dot loading" id="sync-dot" title="Synchronisation…"></span>
   </div>
+
   <div class="nav">
-    <button class="nav-btn active" onclick="nav('demandes')"><i class="ti ti-file-plus"></i> Nouvelle demande</button>
-    <button class="nav-btn" onclick="nav('interventions')"><i class="ti ti-clipboard-list"></i> Liste interventions</button>
-    <button class="nav-btn" onclick="nav('planning')"><i class="ti ti-layout-kanban"></i> Planning</button>
-    <button class="nav-btn" onclick="nav('technicien')"><i class="ti ti-user-check"></i> Vue technicien</button>
+
+    <button class="nav-btn active" onclick="nav('demandes')">
+      <i class="ti ti-file-plus"></i> Nouvelle demande
+    </button>
+
+    <button class="nav-btn" onclick="nav('interventions')">
+      <i class="ti ti-clipboard-list"></i> Liste interventions
+    </button>
+
+    <button class="nav-btn" onclick="nav('planning')">
+      <i class="ti ti-layout-kanban"></i> Planning
+    </button>
+
+    <button class="nav-btn" onclick="nav('technicien')">
+      <i class="ti ti-user-check"></i> Vue technicien
+    </button>
+
     <button class="nav-btn" onclick="nav('alertes')">
-    <button class="nav-btn" onclick="nav('sites')"> <i class="ti ti-building-community"></i> Sites</button>
       <i class="ti ti-bell"></i> Alertes
       <span class="notif-badge" id="notif-count" style="display:none">0</span>
     </button>
-    <button class="nav-btn" onclick="nav('droits')"><i class="ti ti-shield-lock"></i> Droits</button>
+
+    <button class="nav-btn" onclick="nav('sites')">
+      <i class="ti ti-building-community"></i> Sites
+    </button>
+
+    <button class="nav-btn" onclick="nav('droits')">
+      <i class="ti ti-shield-lock"></i> Droits
+    </button>
+
   </div>
+
   <button class="topbar-user" id="topbar-user-btn" onclick="doLogout()" style="display:none">
     <i class="ti ti-user-circle" style="font-size:18px"></i>
     <span id="topbar-username">—</span>
