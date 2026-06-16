@@ -1534,7 +1534,7 @@ function nav(page){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+page).classList.add('active');
-  const idx={demandes:0,interventions:1,planning:2,technicien:3,alertes:4,droits:5};
+  const idx={demandes:0,interventions:1,planning:2,sites:3,technicien:4,alertes:5,droits:6};
   document.querySelectorAll('.nav-btn')[idx[page]].classList.add('active');
   if(page==='planning')      renderPlanning();
   if(page==='technicien')    renderTechView();
