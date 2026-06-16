@@ -179,7 +179,13 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
 
 /* ── PLANNING ── */
 .planning-layout { display:grid; grid-template-columns:290px 1fr; gap:1rem; align-items:start; }
-.task-list-col { position:sticky; top:72px; }
+.task-list-col {
+  position: sticky;
+  top: 72px;
+  z-index: 10;
+  background: var(--surface);
+  padding-bottom: 10px;
+}
 .task-pool {
   background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
   padding:.75rem; min-height:200px; max-height:calc(100vh - 170px); overflow-y:auto;
@@ -1000,7 +1006,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
       </div>
       <div class="planning-with-cal">
         <!-- Colonne gauche : mini-cal + pool -->
-        <div style="display:flex;flex-direction:column;gap:.75rem;position:sticky;top:90px;z-index:10;background:white"
+        <div style="display:flex;flex-direction:column;gap:.75rem;position:sticky;top:72px">
           <!-- Mini calendrier -->
           <div class="mini-cal">
             <div class="mini-cal-header">
