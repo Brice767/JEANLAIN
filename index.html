@@ -771,6 +771,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
     <button class="nav-btn" onclick="nav('planning')"><i class="ti ti-layout-kanban"></i> Planning</button>
     <button class="nav-btn" onclick="nav('technicien')"><i class="ti ti-user-check"></i> Vue technicien</button>
     <button class="nav-btn" onclick="nav('alertes')">
+    <button class="nav-btn" onclick="nav('sites')"> <i class="ti ti-building-community"></i> Sites</button>
       <i class="ti ti-bell"></i> Alertes
       <span class="notif-badge" id="notif-count" style="display:none">0</span>
     </button>
@@ -922,6 +923,45 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
     </div>
   </div>
 
+<!-- ═══ PAGE SITES ═══ -->
+<div class="page page-bg" id="page-sites">
+  <div class="page-content">
+
+    <div class="interventions-toolbar">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+
+        <span style="font-size:13px;color:var(--text2)" id="sites-count"></span>
+
+        <button class="btn btn-primary btn-sm" onclick="openSiteForm()">
+          <i class="ti ti-map-pin-plus"></i> Ajouter un site
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="users-table-wrap">
+      <table class="users-table">
+
+        <thead>
+          <tr>
+            <th>Site</th>
+            <th>Adresse</th>
+            <th>Commentaires</th>
+            <th>Infos clés</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="sites-tbody"></tbody>
+
+      </table>
+    </div>
+
+  </div>
+</div>
+  
   <!-- ═══ PLANNING ═══ -->
   <div class="page page-bg" id="page-planning">
     <div class="page-content">
@@ -1214,6 +1254,53 @@ textarea { resize:vertical; min-height:80px; line-height:1.5; }
   </div>
 </div>
 
+<!-- MODAL SITE -->
+<div class="user-modal-overlay" id="modal-site" style="display:none" onclick="if(event.target===this)closeSiteForm()">
+
+  <div class="user-modal-box">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div class="modal-title">
+        <i class="ti ti-map-pin"></i>
+        <span id="site-modal-title">Ajouter un site</span>
+      </div>
+
+      <button class="detail-close" onclick="closeSiteForm()">✖</button>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group full">
+        <label>Nom du site *</label>
+        <input type="text" id="sf-nom">
+      </div>
+
+      <div class="form-group full">
+        <label>Adresse</label>
+        <input type="text" id="sf-adresse">
+      </div>
+
+      <div class="form-group full">
+        <label>Commentaires</label>
+        <input type="text" id="sf-commentaire">
+      </div>
+
+      <div class="form-group full">
+        <label>Infos clés</label>
+        <input type="text" id="sf-infos">
+      </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:1rem">
+      <button class="btn" onclick="closeSiteForm()">Annuler</button>
+      <button class="btn btn-primary" onclick="saveSite()">Enregistrer</button>
+    </div>
+
+  </div>
+
+</div>
+
 <!-- MODAL INTERVENTION TECHNICIEN -->
 <div class="tech-int-overlay" id="modal-tech-int" style="display:none" onclick="if(event.target===this)closeTechIntModal()">
   <div class="tech-int-box">
@@ -1345,6 +1432,8 @@ const TECHS = [
 ];
 
 let demands=[], assignments=[], notifications=[];
+let sites = [];
+let editingSiteId = null;
 let currentTech='t1', selectedPriority='basse';
 let modalTaskId=null, modalTechId=null, modalDay=null;
 let dragId=null, dragFrom=null;
@@ -1453,6 +1542,7 @@ function nav(page){
   if(page==='alertes')       { renderNotifs(); markAllReadDB(); }
   if(page==='droits')        renderDroits();
   if(page==='interventions') renderInterventions();
+  if(page==='sites') renderSites();
 }
 
 // ── STATS ────────────────────────────────────────────────────────
